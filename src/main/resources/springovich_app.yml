@@ -1,6 +1,9 @@
+server.port: @server.port@
+
 spring:
   application:
     name: @project.name@
+    description: @description@
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
@@ -15,9 +18,45 @@ spring:
   output:
     ansi:
       enabled: always
+  kafka:
+    bootstrap-servers: localhost:9092
+    processing:
+      payout:
+        topic: mg-payout-100-2
+        enabled: false
+      payment:
+        topic: mg-invoice-100-2
+        enabled: false
+    #    ssl:
+    #      trust-store-location: classpath:cert/truststore.p12
+    #      trust-store-password: kenny12
+    #      key-store-location: classpath:cert/keystore.p12
+    #      key-store-password: kenny
+    #      key-password: kenny
+    #      key-store-type: PKCS12
+    #      trust-store-type: PKCS12
+    consumer:
+      group-id: Listener
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: # init
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      client-id: test
+    listener:
+      type: batch
+      ack-mode: manual
+      concurrency: 1
+      poll-timeout: 1000 #ms
+      no-poll-threshold: 5.0 # * poll-timeout value = when consumer is dead
+      log-container-config: true
+      monitor-interval: 10s
+    client-id: test
+    properties:
+      security:
+        protocol: PLAINTEXT
 
 storage:
-  endpoint: localhost:32827
+  endpoint: storage:32827
   bucketName: files
   signingRegion: RU
   clientProtocol: HTTP
@@ -30,22 +69,3 @@ filestorage:
   clientTimeout: 5000
   urlLifeTimeDuration: 360
   timeZone: Europe/Moscow
-
-kafka:
-  bootstrap:
-    servers: localhost:9092
-  concurrency: 1
-  processing:
-    payout:
-      topic: mg-payout-100-2
-      enabled: false
-    payment:
-      topic: mg-invoice-100-2
-      enabled: false
-  ssl:
-    enabled: false
-    keystore-location: src/main/resources/cert/kenny-k.struzhkin.p12
-    keystore-password: kenny
-    key-password: kenny
-    server-password: kenny12
-    server-keystore-location: src/main/resources/cert/truststore.p12

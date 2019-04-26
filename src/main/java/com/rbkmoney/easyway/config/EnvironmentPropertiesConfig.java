@@ -66,10 +66,10 @@ public class EnvironmentPropertiesConfig {
     }
 
     private static void fillKafkaProperties(List<String> properties) {
-        properties.add("kafka.processing.payment.topic=payment");
-        properties.add("kafka.processing.payment.enabled=true");
-        properties.add("kafka.processing.payout.topic=payout");
-        properties.add("kafka.processing.payout.enabled=true");
-        properties.add("kafka.ssl.enabled=false");
+        properties.add("spring.kafka.processing.payout.topic=mg-payout-100-2");
+        properties.add("spring.kafka.processing.payout.enabled=false");
+        properties.add("spring.kafka.processing.payment.topic=mg-invoice-100-2");
+        properties.add("spring.kafka.processing.payment.enabled=false");
+        properties.add("spring.kafka.properties.security.protocol=PLAINTEXT");
     }
 }

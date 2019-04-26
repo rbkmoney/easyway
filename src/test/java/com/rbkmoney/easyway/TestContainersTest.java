@@ -38,8 +38,8 @@ public class TestContainersTest {
     private static Supplier<List<String>> getCommonProperties() {
         return () -> {
             List<String> prop = new ArrayList<>();
-            prop.add("kafka.processing.payment.enabled=false");
-            prop.add("kafka.processing.payout.enabled=false");
+            prop.add("spring.kafka.processing.payout.topic=mg-payout-100-2");
+            prop.add("spring.kafka.processing.payout.enabled=false");
 
             return prop;
         };
