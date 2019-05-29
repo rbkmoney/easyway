@@ -1,5 +1,6 @@
-server.port: @server.port@
-
+server:
+  port: @server.port@
+  ------------------------------------------------------------------------------------------------
 spring:
   application:
     name: @project.name@
@@ -18,43 +19,36 @@ spring:
   output:
     ansi:
       enabled: always
-  kafka:
-    bootstrap-servers: localhost:9092
-    processing:
-      payout:
-        topic: mg-payout-100-2
-        enabled: false
-      payment:
-        topic: mg-invoice-100-2
-        enabled: false
-    #    ssl:
-    #      trust-store-location: classpath:cert/truststore.p12
-    #      trust-store-password: kenny12
-    #      key-store-location: classpath:cert/keystore.p12
-    #      key-store-password: kenny
-    #      key-password: kenny
-    #      key-store-type: PKCS12
-    #      trust-store-type: PKCS12
-    consumer:
-      group-id: Listener
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: # init
-      enable-auto-commit: false
-      auto-offset-reset: earliest
-      client-id: test
-    listener:
-      type: batch
-      ack-mode: manual
-      concurrency: 1
-      poll-timeout: 1000 #ms
-      no-poll-threshold: 5.0 # * poll-timeout value = when consumer is dead
-      log-container-config: true
-      monitor-interval: 10s
-    client-id: test
-    properties:
-      security:
-        protocol: PLAINTEXT
-
+  ------------------------------------------------------------------------------------------------
+kafka:
+  bootstrap-servers: kenny-kafka1.bst1.rbkmoney.net:9092
+  client-id: kafkaClient
+  ssl:
+    enabled: false
+    trust-store-location: "test"
+    trust-store-password: "test"
+    key-store-location: "test"
+    key-store-password: "test"
+    key-password: "test"
+    key-store-type: PKCS12
+    trust-store-type: PKCS12
+  consumer:
+    concurrency: 8
+    group-id: "KafkaListener"
+    enable-auto-commit: false
+    auto-offset-reset: earliest
+    max-poll-records: 20
+  topics:
+    invoice:
+      id: mg-invoice-100-2
+      enabled: false
+    payment:
+      id: mg-payment-100-2
+      enabled: false
+    payout:
+      id: mg-payout-100-2
+      enabled: false
+  ------------------------------------------------------------------------------------------------
 storage:
   endpoint: storage:32827
   bucketName: files
@@ -63,9 +57,10 @@ storage:
   clientMaxErrorRetry: 10
   socketTimeout: 50000
   connectionTimeout: 10000
-
+  ------------------------------------------------------------------------------------------------
 filestorage:
   url: http://file-storage:8022/file_storage
   clientTimeout: 5000
   urlLifeTimeDuration: 360
   timeZone: Europe/Moscow
+  ------------------------------------------------------------------------------------------------

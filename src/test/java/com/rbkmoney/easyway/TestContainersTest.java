@@ -1,15 +1,16 @@
 package com.rbkmoney.easyway;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static org.junit.Assert.assertTrue;
+
 public class TestContainersTest {
 
-    private static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
+    private final static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
             .addPostgresqlTestContainer()
             .addFileStorageTestContainer()
             .addKafkaTestContainer()
@@ -29,7 +30,7 @@ public class TestContainersTest {
                 }
             }
 
-            Assert.assertTrue(flag);
+            assertTrue(flag);
         } finally {
             testContainers.stopTestContainers();
         }
@@ -37,11 +38,11 @@ public class TestContainersTest {
 
     private static Supplier<List<String>> getCommonProperties() {
         return () -> {
-            List<String> prop = new ArrayList<>();
-            prop.add("spring.kafka.processing.payout.topic=mg-payout-100-2");
-            prop.add("spring.kafka.processing.payout.enabled=false");
+            List<String> properties = new ArrayList<>();
+            properties.add("kafka.topics.invoice.id=mg-invoice-100-2");
+            properties.add("kafka.topics.invoice.enabled=false");
 
-            return prop;
+            return properties;
         };
     }
 

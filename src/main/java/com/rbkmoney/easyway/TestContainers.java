@@ -19,11 +19,12 @@ public class TestContainers {
 
     private TestContainersParameters parameters;
 
+    private boolean localDockerContainersEnabled;
+
     private boolean postgresqlTestContainerEnabled;
     private boolean cephTestContainerEnabled;
     private boolean fileStorageTestContainerEnabled;
     private boolean kafkaTestContainerEnabled;
-    private boolean localDockerContainersEnabled;
 
     private PostgreSQLContainer postgresqlTestContainer;
     private GenericContainer cephTestContainer;

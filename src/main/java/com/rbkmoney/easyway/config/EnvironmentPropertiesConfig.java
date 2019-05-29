@@ -19,19 +19,13 @@ public class EnvironmentPropertiesConfig {
                     }
             );
             testContainers.getCephTestContainer().ifPresent(
-                    c -> {
-                        properties.add("storage.endpoint=" + c.getContainerIpAddress() + ":" + c.getMappedPort(80));
-                        fillCephProperties(testContainers, properties);
-                    }
+                    c -> fillCephProperties(testContainers, properties, c.getContainerIpAddress() + ":" + c.getMappedPort(80))
             );
             testContainers.getFileStorageTestContainer().ifPresent(
                     c -> properties.add("filestorage.url=http://" + c.getContainerIpAddress() + ":" + testContainers.getParameters().getFileStoragePort() + "/file_storage")
             );
             testContainers.getKafkaTestContainer().ifPresent(
-                    c -> {
-                        properties.add("kafka.bootstrap.servers=" + c.getBootstrapServers());
-                        fillKafkaProperties(properties);
-                    }
+                    c -> fillKafkaProperties(properties, c.getBootstrapServers())
             );
         } else {
             if (testContainers.isPostgresqlTestContainerEnabled()) {
@@ -43,20 +37,19 @@ public class EnvironmentPropertiesConfig {
                 properties.add("flyway.password=" + testContainers.getParameters().getPostgresqlPassword());
             }
             if (testContainers.isCephTestContainerEnabled()) {
-                properties.add("storage.endpoint=localhost:" + testContainers.getParameters().getCephPort());
-                fillCephProperties(testContainers, properties);
+                fillCephProperties(testContainers, properties, "localhost:" + testContainers.getParameters().getCephPort());
             }
             if (testContainers.isFileStorageTestContainerEnabled()) {
                 properties.add("filestorage.url=http://localhost:" + testContainers.getParameters().getFileStoragePort() + "/file_storage");
             }
             if (testContainers.isKafkaTestContainerEnabled()) {
-                properties.add("kafka.bootstrap.servers=localhost:" + testContainers.getParameters().getKafkaPort());
-                fillKafkaProperties(properties);
+                fillKafkaProperties(properties, "localhost:" + testContainers.getParameters().getKafkaPort());
             }
         }
     }
 
-    private static void fillCephProperties(TestContainers testContainers, List<String> properties) {
+    private static void fillCephProperties(TestContainers testContainers, List<String> properties, String storageEndpoint) {
+        properties.add("storage.endpoint=" + storageEndpoint);
         properties.add("storage.signingRegion=" + testContainers.getParameters().getCephSigningRegion());
         properties.add("storage.accessKey=" + testContainers.getParameters().getCephAccessKey());
         properties.add("storage.secretKey=" + testContainers.getParameters().getCephSecretKey());
@@ -65,11 +58,14 @@ public class EnvironmentPropertiesConfig {
         properties.add("storage.bucketName=" + testContainers.getParameters().getCephBucketName());
     }
 
-    private static void fillKafkaProperties(List<String> properties) {
-        properties.add("spring.kafka.processing.payout.topic=mg-payout-100-2");
-        properties.add("spring.kafka.processing.payout.enabled=false");
-        properties.add("spring.kafka.processing.payment.topic=mg-invoice-100-2");
-        properties.add("spring.kafka.processing.payment.enabled=false");
-        properties.add("spring.kafka.properties.security.protocol=PLAINTEXT");
+    private static void fillKafkaProperties(List<String> properties, String bootstrapServers) {
+        properties.add("kafka.bootstrap-servers=" + bootstrapServers);
+        properties.add("kafka.topics.invoice.id=mg-invoice-100-2");
+        properties.add("kafka.topics.invoice.enabled=true");
+        properties.add("kafka.topics.payment.id=mg-payment-100-2");
+        properties.add("kafka.topics.payment.enabled=false");
+        properties.add("kafka.topics.payout.id=mg-payout-100-2");
+        properties.add("kafka.topics.payout.enabled=false");
+        properties.add("kafka.ssl.enabled=false");
     }
 }
