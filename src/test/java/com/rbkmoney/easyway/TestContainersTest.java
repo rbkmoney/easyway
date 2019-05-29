@@ -2,8 +2,7 @@ package com.rbkmoney.easyway;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertTrue;
@@ -23,7 +22,7 @@ public class TestContainersTest {
 
             boolean flag = false;
 
-            String[] properties = testContainers.getEnvironmentProperties(getCommonProperties());
+            String[] properties = testContainers.getEnvironmentProperties(getEnvironmentPropertiesConsumer());
             for (String property : properties) {
                 if (property.contains("flyway.url")) {
                     flag = true;
@@ -36,13 +35,10 @@ public class TestContainersTest {
         }
     }
 
-    private static Supplier<List<String>> getCommonProperties() {
-        return () -> {
-            List<String> properties = new ArrayList<>();
-            properties.add("kafka.topics.invoice.id=mg-invoice-100-2");
-            properties.add("kafka.topics.invoice.enabled=false");
-
-            return properties;
+    private static Consumer<EnvironmentProperties> getEnvironmentPropertiesConsumer() {
+        return environmentProperties -> {
+            environmentProperties.put("kafka.topics.invoice.id", "mg-invoice-100-2");
+            environmentProperties.put("kafka.topics.invoice.enabled", "true");
         };
     }
 

@@ -8,10 +8,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 
 @NoArgsConstructor
 @Setter
@@ -71,14 +69,14 @@ public class TestContainers {
         return Optional.ofNullable(kafkaTestContainer);
     }
 
-    public String[] getEnvironmentProperties(Supplier<List<String>> commonProperties) {
-        List<String> properties = new ArrayList<>();
+    public String[] getEnvironmentProperties(Consumer<EnvironmentProperties> additionalEnvironmentProperties) {
+        EnvironmentProperties environmentProperties = new EnvironmentProperties();
 
-        EnvironmentPropertiesConfig.configure(this, properties);
+        EnvironmentPropertiesConfig.configure(this, environmentProperties);
 
-        properties.addAll(commonProperties.get());
+        additionalEnvironmentProperties.accept(environmentProperties);
 
-        return properties.toArray(new String[0]);
+        return environmentProperties.getAll();
     }
 
     public void startTestContainers() {
