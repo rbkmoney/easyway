@@ -8,11 +8,6 @@ build('easyway', 'docker-host') {
         javaLibPipeline = load("build_utils/jenkins_lib/pipeJavaLibOutsideImage.groovy")
     }
 
-    def serviceName = env.REPO_NAME
-    def mvnArgs = '-DjvmArgs="-Xmx256m"'
-    def useJava11 = true
-    def registry = 'dr2.rbkmoney.com'
-    def registryCredsId = 'jenkins_harbor'
-
-    javaLibPipeline(serviceName, useJava11, mvnArgs, registry, registryCredsId)
+    def buildImageTag = "fcf116dd775cc2e91bffb6a36835754e3f2d5321" //not used, why we didn’t remove the build image?
+    javaLibPipeline(buildImageTag)
 }
