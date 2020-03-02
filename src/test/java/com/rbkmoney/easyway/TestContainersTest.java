@@ -13,6 +13,7 @@ public class TestContainersTest {
             .addPostgresqlTestContainer()
             .addFileStorageTestContainer()
             .addKafkaTestContainer()
+            .addCephTestContainer()
             .build();
 
     @Test

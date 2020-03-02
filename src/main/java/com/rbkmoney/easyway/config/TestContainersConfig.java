@@ -27,14 +27,15 @@ public class TestContainersConfig {
                     container -> {
                         container
                                 .withNetworkAliases("ceph")
-                                .withExposedPorts(5000, 80)
+                                .withExposedPorts(5000, 8080)
+                                .withEnv("CEPH_DAEMON", "demo")
                                 .withEnv("RGW_NAME", testContainers.getParameters().getCephRgwName())
                                 .withEnv("NETWORK_AUTO_DETECT", testContainers.getParameters().getCephNetworkAutoDetect())
                                 .withEnv("CEPH_DEMO_UID", testContainers.getParameters().getCephDemoUid())
                                 .withEnv("CEPH_DEMO_ACCESS_KEY", testContainers.getParameters().getCephAccessKey())
                                 .withEnv("CEPH_DEMO_SECRET_KEY", testContainers.getParameters().getCephSecretKey())
                                 .withEnv("CEPH_DEMO_BUCKET", testContainers.getParameters().getCephBucketName())
-                                .waitingFor(getWaitStrategy("/api/v0.1/health", 200, Duration.ofMinutes(1)));
+                                .waitingFor(getWaitStrategy("/api/v0.1/health", 200, 5000, Duration.ofMinutes(1)));
 
                         startContainer("ceph", container);
                     }
@@ -45,7 +46,7 @@ public class TestContainersConfig {
                                 .withNetworkAliases("file-storage")
                                 // это не сработает при тестах на mac os. но этот контейнер нужен только при интеграционных тестах с файловым хранилищем
                                 .withNetworkMode("host")
-                                .withEnv("storage.endpoint", "localhost:" + testContainers.getCephTestContainer().get().getMappedPort(80))
+                                .withEnv("storage.endpoint", "localhost:" + testContainers.getCephTestContainer().get().getMappedPort(8080))
                                 .withEnv("storage.signingRegion", testContainers.getParameters().getCephSigningRegion())
                                 .withEnv("storage.accessKey", testContainers.getParameters().getCephAccessKey())
                                 .withEnv("storage.secretKey", testContainers.getParameters().getCephSecretKey())
@@ -74,9 +75,10 @@ public class TestContainersConfig {
         }
     }
 
-    private static WaitStrategy getWaitStrategy(String path, Integer statusCode, Duration duration) {
+    private static WaitStrategy getWaitStrategy(String path, Integer statusCode, Integer port, Duration duration) {
         return new HttpWaitStrategy()
                 .forPath(path)
+                .forPort(port)
                 .forStatusCode(statusCode)
                 .withStartupTimeout(duration);
     }
