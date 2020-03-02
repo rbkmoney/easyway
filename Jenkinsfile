@@ -1,5 +1,5 @@
 #!groovy
-build('easyway', 'java-maven') {
+build('easyway', 'docker-host') {
     checkoutRepo()
     loadBuildUtils()
 
