@@ -18,7 +18,7 @@ public class EnvironmentPropertiesConfig {
                     }
             );
             testContainers.getCephTestContainer().ifPresent(
-                    c -> fillCephProperties(testContainers, properties, c.getContainerIpAddress() + ":" + c.getMappedPort(80))
+                    c -> fillCephProperties(testContainers, properties, c.getContainerIpAddress() + ":" + c.getMappedPort(8080))
             );
             testContainers.getFileStorageTestContainer().ifPresent(
                     c -> properties.put("filestorage.url", "http://" + c.getContainerIpAddress() + ":" + testContainers.getParameters().getFileStoragePort() + "/file_storage")

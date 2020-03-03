@@ -73,10 +73,10 @@ public class TestContainersBuilder {
             testContainers.setPostgresqlTestContainer(new PostgreSQLContainer<>("postgres:" + parameters.getPostgresqlImageTag()));
         }
         if (cephTestContainerEnabled) {
-            testContainers.setCephTestContainer(new GenericContainer<>("dr.rbkmoney.com/ceph-demo:" + parameters.getCephImageTag()));
+            testContainers.setCephTestContainer(new GenericContainer<>("ceph/daemon:" + parameters.getCephImageTag()));
         }
         if (fileStorageTestContainerEnabled) {
-            testContainers.setFileStorageTestContainer(new GenericContainer<>("dr.rbkmoney.com/rbkmoney/file-storage:" + parameters.getFileStorageImageTag()));
+            testContainers.setFileStorageTestContainer(new GenericContainer<>("dr2.rbkmoney.com/rbkmoney/file-storage:" + parameters.getFileStorageImageTag()));
         }
         if (kafkaTestContainerEnabled) {
             testContainers.setKafkaTestContainer(new KafkaContainer(parameters.getKafkaImageTag()));
