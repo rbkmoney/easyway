@@ -14,7 +14,7 @@ public class TestContainersTest {
     private final static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
             .addPostgresqlTestContainer()
             .addCephTestContainer()
-            .addFileStorageTestContainer()
+//            .addFileStorageTestContainer()
             .addKafkaTestContainer()
             .build();
 
@@ -23,8 +23,12 @@ public class TestContainersTest {
         try {
             testContainers.startTestContainers();
 
-            List<String> containersProps = Arrays.asList("spring.datasource.url", "storage.endpoint",
-                    "filestorage.url", "kafka.bootstrap-servers");
+            List<String> containersProps = Arrays.asList(
+                    "spring.datasource.url",
+                    "storage.endpoint",
+//                    "filestorage.url",
+                    "kafka.bootstrap-servers"
+            );
 
             int actualSize = Arrays.stream(testContainers.getEnvironmentProperties(getEnvironmentPropertiesConsumer()))
                     .filter(prop -> containersProps.stream().anyMatch(prop::contains))
