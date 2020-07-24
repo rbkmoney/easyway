@@ -14,7 +14,7 @@ public class TestContainersTest {
     private final static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
             .addPostgresqlTestContainer()
             .addCephTestContainer()
-//            .addFileStorageTestContainer()
+            .addFileStorageTestContainer()
             .addKafkaTestContainer()
             .build();
 
@@ -26,7 +26,7 @@ public class TestContainersTest {
             List<String> containersProps = Arrays.asList(
                     "spring.datasource.url",
                     "storage.endpoint",
-//                    "filestorage.url",
+                    "filestorage.url",
                     "kafka.bootstrap-servers"
             );
 
