@@ -15,13 +15,22 @@ public class EnvironmentPropertiesConfig {
                         properties.put("flyway.url", c.getJdbcUrl());
                         properties.put("flyway.user", c.getUsername());
                         properties.put("flyway.password", c.getPassword());
+                        properties.put("spring.flyway.url", c.getJdbcUrl());
+                        properties.put("spring.flyway.user", c.getUsername());
+                        properties.put("spring.flyway.password", c.getPassword());
                     }
             );
             testContainers.getCephTestContainer().ifPresent(
-                    c -> fillCephProperties(testContainers, properties, c.getContainerIpAddress() + ":" + c.getMappedPort(8080))
+                    c -> {
+                        String storageEndpoint = c.getContainerIpAddress() + ":" + c.getMappedPort(8080);
+                        fillCephProperties(testContainers, properties, storageEndpoint);
+                    }
             );
             testContainers.getFileStorageTestContainer().ifPresent(
-                    c -> properties.put("filestorage.url", "http://" + c.getContainerIpAddress() + ":" + testContainers.getParameters().getFileStoragePort() + "/file_storage")
+                    c -> {
+                        String url = "http://" + c.getContainerIpAddress() + ":" + testContainers.getParameters().getFileStoragePort() + "/file_storage";
+                        properties.put("filestorage.url", url);
+                    }
             );
             testContainers.getKafkaTestContainer().ifPresent(
                     c -> fillKafkaProperties(properties, c.getBootstrapServers())
@@ -34,6 +43,9 @@ public class EnvironmentPropertiesConfig {
                 properties.put("flyway.url", testContainers.getParameters().getPostgresqlJdbcUrl());
                 properties.put("flyway.user", testContainers.getParameters().getPostgresqlUsername());
                 properties.put("flyway.password", testContainers.getParameters().getPostgresqlPassword());
+                properties.put("spring.flyway.url", testContainers.getParameters().getPostgresqlJdbcUrl());
+                properties.put("spring.flyway.user", testContainers.getParameters().getPostgresqlUsername());
+                properties.put("spring.flyway.password", testContainers.getParameters().getPostgresqlPassword());
             }
             if (testContainers.isCephTestContainerEnabled()) {
                 fillCephProperties(testContainers, properties, "localhost:" + testContainers.getParameters().getCephPort());
