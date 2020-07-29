@@ -49,22 +49,23 @@ services:
   #      - /tmp/docker/kafka/data:/var/lib/kafka/data
 
   ceph:
-    image: dr.rbkmoney.com/ceph-demo:latest
+    image: ceph/daemon:v3.0.5-stable-3.0-luminous-centos-7
     hostname: ceph
     container_name: ceph
     ports:
-      - 42827:80
+      - 42827:8080
     environment:
       SERVICE_NAME: ceph
       RGW_NAME: localhost
       NETWORK_AUTO_DETECT: 4
+      CEPH_DAEMON: demo
       CEPH_DEMO_UID: ceph-test
       CEPH_DEMO_ACCESS_KEY: test
       CEPH_DEMO_SECRET_KEY: test
-      CEPH_DEMO_BUCKET: test
+      CEPH_DEMO_BUCKET: TEST
 
   file-storage:
-    image: dr.rbkmoney.com/rbkmoney/file-storage: # <- fill
+    image: rbkmoney/file-storage:25506ff3def2e9a629f2056d514e84ecd3ecb2b3
     depends_on:
       - ceph
     container_name: file-storage
@@ -79,4 +80,4 @@ services:
       storage.secretKey: test
       storage.clientProtocol: HTTP
       storage.client.maxErrorRetry: 10
-      storage.bucketName: test
+      storage.bucketName: TEST

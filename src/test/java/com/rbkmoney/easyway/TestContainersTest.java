@@ -2,18 +2,20 @@ package com.rbkmoney.easyway;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class TestContainersTest {
 
     private final static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
             .addPostgresqlTestContainer()
+            .addCephTestContainer()
             .addFileStorageTestContainer()
             .addKafkaTestContainer()
-            .addCephTestContainer()
             .build();
 
     @Test
@@ -21,16 +23,19 @@ public class TestContainersTest {
         try {
             testContainers.startTestContainers();
 
-            boolean flag = false;
+            List<String> containersProps = Arrays.asList(
+                    "spring.datasource.url",
+                    "storage.endpoint",
+                    "filestorage.url",
+                    "kafka.bootstrap-servers"
+            );
 
-            String[] properties = testContainers.getEnvironmentProperties(getEnvironmentPropertiesConsumer());
-            for (String property : properties) {
-                if (property.contains("flyway.url")) {
-                    flag = true;
-                }
-            }
+            int actualSize = Arrays.stream(testContainers.getEnvironmentProperties(getEnvironmentPropertiesConsumer()))
+                    .filter(prop -> containersProps.stream().anyMatch(prop::contains))
+                    .mapToInt(value -> 1)
+                    .sum();
 
-            assertTrue(flag);
+            assertEquals(containersProps.size(), actualSize);
         } finally {
             testContainers.stopTestContainers();
         }

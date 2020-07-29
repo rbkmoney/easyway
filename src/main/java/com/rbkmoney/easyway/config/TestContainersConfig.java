@@ -28,9 +28,9 @@ public class TestContainersConfig {
                         container
                                 .withNetworkAliases("ceph")
                                 .withExposedPorts(5000, 8080)
-                                .withEnv("CEPH_DAEMON", "demo")
                                 .withEnv("RGW_NAME", testContainers.getParameters().getCephRgwName())
                                 .withEnv("NETWORK_AUTO_DETECT", testContainers.getParameters().getCephNetworkAutoDetect())
+                                .withEnv("CEPH_DAEMON", testContainers.getParameters().getCephDaemon())
                                 .withEnv("CEPH_DEMO_UID", testContainers.getParameters().getCephDemoUid())
                                 .withEnv("CEPH_DEMO_ACCESS_KEY", testContainers.getParameters().getCephAccessKey())
                                 .withEnv("CEPH_DEMO_SECRET_KEY", testContainers.getParameters().getCephSecretKey())
@@ -56,7 +56,7 @@ public class TestContainersConfig {
                                 .withEnv("server.port", String.valueOf(testContainers.getParameters().getFileStoragePort()))
                                 .waitingFor(getNetworkModeHostWaitStrategy("/actuator/health", 200, testContainers.getParameters().getFileStoragePort(), Duration.ofMinutes(1)));
 
-                        startContainer("file storage", container);
+                        startContainer("file-storage", container);
                     }
             );
             testContainers.getKafkaTestContainer().ifPresent(
@@ -92,8 +92,9 @@ public class TestContainersConfig {
     }
 
     private static void startContainer(String name, GenericContainer container) {
-        VisibleAssertions.pass("#### Starting test container: [" + name + "] ...");
+        VisibleAssertions.pass("STARTING TESTCONTAINER: [" + name + "] ...");
         container.start();
-        VisibleAssertions.pass(String.format("#### Test container: [" + name + "] successfully started, container='%s'", container.toString()));
+        VisibleAssertions.pass("TESTCONTAINER: [" + name + "] SUCCESSFULLY STARTED");
+        VisibleAssertions.pass(container.toString());
     }
 }
