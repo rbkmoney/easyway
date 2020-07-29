@@ -65,7 +65,7 @@ services:
       CEPH_DEMO_BUCKET: TEST
 
   file-storage:
-    image: dr2.rbkmoney.com/rbkmoney/file-storage: # <- fill
+    image: 'dr2.rbkmoney.com/rbkmoney/file-storage:25506ff3def2e9a629f2056d514e84ecd3ecb2b3'
     depends_on:
       - ceph
     container_name: file-storage

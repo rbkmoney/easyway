@@ -12,10 +12,10 @@ import static org.junit.Assert.assertEquals;
 public class TestContainersTest {
 
     private final static TestContainers testContainers = TestContainersBuilder.builderWithTestContainers(getParameters())
-//            .addPostgresqlTestContainer()
+            .addPostgresqlTestContainer()
             .addCephTestContainer()
             .addFileStorageTestContainer()
-//            .addKafkaTestContainer()
+            .addKafkaTestContainer()
             .build();
 
     @Test
@@ -24,13 +24,10 @@ public class TestContainersTest {
             testContainers.startTestContainers();
 
             List<String> containersProps = Arrays.asList(
-//                    "spring.datasource.url"
-//                    ,
-                    "storage.endpoint"
-                    ,
-                    "filestorage.url"
-//                    ,
-//                    "kafka.bootstrap-servers"
+                    "spring.datasource.url",
+                    "storage.endpoint",
+                    "filestorage.url",
+                    "kafka.bootstrap-servers"
             );
 
             int actualSize = Arrays.stream(testContainers.getEnvironmentProperties(getEnvironmentPropertiesConsumer()))
