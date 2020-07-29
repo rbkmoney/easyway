@@ -1,13 +1,16 @@
 #!groovy
-build('easyway', 'docker-host') {
+build('easyway', 'java-maven') {
     checkoutRepo()
     loadBuildUtils()
 
-    def javaLibPipeline
-    runStage('load JavaLib pipeline') {
-        javaLibPipeline = load("build_utils/jenkins_lib/pipeJavaLib.groovy")
+    def javaServicePipeline
+    runStage('load JavaService pipeline') {
+        javaServicePipeline = load("build_utils/jenkins_lib/pipeJavaService.groovy")
     }
 
-    def buildImageTag = "fcf116dd775cc2e91bffb6a36835754e3f2d5321" //not used, why we didn’t remove the build image?
-    javaLibPipeline(buildImageTag)
+    def serviceName = env.REPO_NAME
+    def mvnArgs = '-DjvmArgs="-Xmx256m"'
+    def useJava11 = false
+
+    javaServicePipeline(serviceName, useJava11, mvnArgs)
 }
