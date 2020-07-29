@@ -76,7 +76,7 @@ public class TestContainersBuilder {
             testContainers.setCephTestContainer(new GenericContainer<>("ceph/daemon:" + parameters.getCephImageTag()));
         }
         if (fileStorageTestContainerEnabled) {
-            testContainers.setFileStorageTestContainer(new GenericContainer<>("dr2.rbkmoney.com/rbkmoney/file-storage:" + parameters.getFileStorageImageTag()));
+            testContainers.setFileStorageTestContainer(new GenericContainer<>("rbkmoney/file-storage:" + parameters.getFileStorageImageTag()));
         }
         if (kafkaTestContainerEnabled) {
             testContainers.setKafkaTestContainer(new KafkaContainer(parameters.getKafkaImageTag()));
