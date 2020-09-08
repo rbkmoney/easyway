@@ -37,9 +37,9 @@
             <version>${testcontainers.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.benas</groupId>
-            <artifactId>random-beans</artifactId>
-            <version>3.9.0</version>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>4.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney.geck</groupId>
