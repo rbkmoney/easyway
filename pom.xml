@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>com.rbkmoney.geck</groupId>
-            <artifactId>serializer</artifactId>
+            <artifactId>common</artifactId>
             <version>0.6.11</version>
         </dependency>
         <dependency>
