@@ -23,7 +23,7 @@ public class TestContainersParameters {
     private String cephMaxErrorRetry = "10";
     private String fileStorageImageTag = "25506ff3def2e9a629f2056d514e84ecd3ecb2b3";
     private int fileStoragePort = 42826;
-    private String kafkaImageTag = "5.0.1";
+    private String kafkaImageTag = "5.2.1";
     private int kafkaPort = 9092;
 
 }
