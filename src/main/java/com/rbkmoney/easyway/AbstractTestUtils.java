@@ -1,6 +1,7 @@
 package com.rbkmoney.easyway;
 
 import com.rbkmoney.geck.common.util.TypeUtil;
+import org.jeasy.random.EasyRandom;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
 
@@ -25,19 +25,19 @@ public abstract class AbstractTestUtils {
     }
 
     protected static Long generateLong() {
-        return random(Long.class);
+        return new EasyRandom().nextLong();
     }
 
     protected static Integer generateInt() {
-        return random(Integer.class);
+        return new EasyRandom().nextInt();
     }
 
     protected static String generateString() {
-        return random(String.class);
+        return new EasyRandom().nextObject(String.class);
     }
 
     protected static LocalDateTime generateLocalDateTime() {
-        return random(LocalDateTime.class);
+        return new EasyRandom().nextObject(LocalDateTime.class);
     }
 
     protected static Instant generateCurrentTimePlusDay() {

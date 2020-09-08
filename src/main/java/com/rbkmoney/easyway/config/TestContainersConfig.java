@@ -64,7 +64,7 @@ public class TestContainersConfig {
                         container
                                 .withEmbeddedZookeeper()
                                 .withNetworkAliases("kafka")
-                                .withExposedPorts(9092)
+                                .withExposedPorts(9093)
                                 .withStartupTimeout(Duration.ofMinutes(1));
 
                         startContainer("kafka", container);

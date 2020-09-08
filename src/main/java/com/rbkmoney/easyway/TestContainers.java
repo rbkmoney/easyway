@@ -49,7 +49,7 @@ public class TestContainers {
         return kafkaTestContainerEnabled;
     }
 
-    public Boolean isLocalDockerContainersEnabled() {
+    public boolean isLocalDockerContainersEnabled() {
         return localDockerContainersEnabled;
     }
 
