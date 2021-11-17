@@ -3,6 +3,8 @@ build('easyway', 'docker-host') {
     checkoutRepo()
     loadBuildUtils()
 
+    env.skipDtrack = true
+    
     def javaLibPipeline
     runStage('load javaLib pipeline') {
         javaLibPipeline = load("build_utils/jenkins_lib/pipeJavaLibOutsideImage.groovy")
