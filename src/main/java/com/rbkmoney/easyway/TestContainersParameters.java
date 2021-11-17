@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TestContainersParameters {
 
-    private String postgresqlImageTag = "10.9";
+    private String postgresqlImageTag = "13.3";
     private String postgresqlJdbcUrl;
     private String postgresqlUsername = "postgres";
     private String postgresqlPassword = "postgres";
